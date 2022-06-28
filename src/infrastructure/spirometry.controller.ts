@@ -1,14 +1,24 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { StoreReadingUseCase } from './application/store-reading.use-case';
-import { SpirometryDataDTO } from './application/spirometry-data.dto';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { StoreReadingService } from '../application/store-reading.service';
+import { IsDateString, IsNumber } from 'class-validator';
+import { Response } from 'express';
+
+class SpirometryDataBody {
+  @IsNumber()
+  value: number;
+  @IsDateString()
+  created_at: string;
+  @IsNumber()
+  patient_id: number;
+}
 
 @Controller('spirometry')
 export class SpirometryController {
-  constructor(private readonly storeReadingUseCase: StoreReadingUseCase) {}
+  constructor(private readonly storeReadingService: StoreReadingService) {}
 
   @Post('data')
-  @HttpCode(HttpStatus.ACCEPTED)
-  storeReading(@Body() storeReadingBody: SpirometryDataDTO) {
-    return this.storeReadingUseCase.storeReading(storeReadingBody);
+  storeReading(@Body() { value, created_at, patient_id }: SpirometryDataBody, @Res() response: Response) {
+    const saved = this.storeReadingService.storeReading(value, new Date(created_at), patient_id);
+    response.status(HttpStatus.OK).json({ saved });
   }
 }
