@@ -17,8 +17,8 @@ export class SpirometryController {
   constructor(private readonly storeReadingService: StoreReadingService) {}
 
   @Post('data')
-  storeReading(@Body() { value, created_at, patient_id }: SpirometryDataBody, @Res() response: Response) {
-    const saved = this.storeReadingService.storeReading(value, new Date(created_at), patient_id);
+  async storeReading(@Body() { value, created_at, patient_id }: SpirometryDataBody, @Res() response: Response): Promise<void> {
+    const saved = await this.storeReadingService.storeReading(value, new Date(created_at), patient_id);
     response.status(HttpStatus.OK).json({ saved });
   }
 }

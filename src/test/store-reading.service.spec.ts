@@ -1,6 +1,6 @@
-import { SpirometryRepository } from './domain/spirometry.repository';
-import { StoreReadingService } from './application/store-reading.service';
-import { InMemorySpirometryDataRepository } from './infrastructure/in-memory-spirometry-data.repository';
+import { SpirometryRepository } from '../domain/spirometry.repository';
+import { StoreReadingService } from '../application/store-reading.service';
+import { InMemorySpirometryDataRepository } from '../infrastructure/in-memory-spirometry-data.repository';
 
 describe('Store Reading', () => {
   let spirometryRepository: SpirometryRepository;
